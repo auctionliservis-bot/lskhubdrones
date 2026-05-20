@@ -3,7 +3,7 @@ import { BrandHeader, BrandFooter } from "@/components/Brand";
 import { SurveyForm } from "@/components/SurveyForm";
 import { INDUSTRY_SURVEY } from "@/lib/survey-questions";
 
-export const Route = createFileRoute("/drone-lab/industry")({
+export const Route = createFileRoute("/industry")({
   head: () => ({
     meta: [
       { title: "Анкета для промышленных предприятий · Lisakovsk HUB Drone & AI Lab" },

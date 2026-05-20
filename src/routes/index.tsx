@@ -44,7 +44,7 @@ function HomePage() {
         </div>
 
         <div className="grid sm:grid-cols-2 gap-4 sm:gap-6">
-          <Link to="/drone-lab/agro" className="group">
+          <Link to="/agro" className="group">
             <Card className="h-full p-6 sm:p-7 shadow-card hover:shadow-soft transition-all hover:-translate-y-0.5 border-border/60 cursor-pointer">
               <div className="w-12 h-12 rounded-xl bg-secondary/20 flex items-center justify-center mb-4">
                 <Sprout className="w-6 h-6 text-secondary-foreground" style={{ color: "oklch(0.5 0.16 165)" }} />
@@ -59,7 +59,7 @@ function HomePage() {
             </Card>
           </Link>
 
-          <Link to="/drone-lab/industry" className="group">
+          <Link to="/industry" className="group">
             <Card className="h-full p-6 sm:p-7 shadow-card hover:shadow-soft transition-all hover:-translate-y-0.5 border-border/60 cursor-pointer">
               <div className="w-12 h-12 rounded-xl bg-primary/15 flex items-center justify-center mb-4">
                 <Factory className="w-6 h-6 text-primary" />

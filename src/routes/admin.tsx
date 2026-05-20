@@ -18,7 +18,7 @@ import { rowsToCSV, contactsToCSV, downloadFile, buildTextReport } from "@/lib/a
 import { checkAdminAccess, deleteAllSurveyResponses, getAdminSurveyResponses } from "@/lib/admin.functions";
 import { AGRO_SURVEY, INDUSTRY_SURVEY } from "@/lib/survey-questions";
 
-export const Route = createFileRoute("/drone-lab/admin")({
+export const Route = createFileRoute("/admin")({
   head: () => ({ meta: [{ title: "Админ · Lisakovsk HUB Drone & AI Lab" }] }),
   component: AdminPage,
 });
