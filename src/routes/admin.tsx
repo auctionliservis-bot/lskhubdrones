@@ -12,10 +12,10 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend } from "recharts";
 import { toast } from "sonner";
-import { Loader2, LogOut, Download, Flame, Sparkles, FileText } from "lucide-react";
+import { Loader2, LogOut, Download, Flame, Sparkles, FileText, Trash2 } from "lucide-react";
 import { type SurveyRow, answersOf, frequency, isHotLead, surveyFor } from "@/lib/admin-analytics";
 import { rowsToCSV, contactsToCSV, downloadFile, buildTextReport } from "@/lib/admin-export";
-import { checkAdminAccess, getAdminSurveyResponses } from "@/lib/admin.functions";
+import { checkAdminAccess, deleteAllSurveyResponses, getAdminSurveyResponses } from "@/lib/admin.functions";
 import { AGRO_SURVEY, INDUSTRY_SURVEY } from "@/lib/survey-questions";
 
 export const Route = createFileRoute("/admin")({
