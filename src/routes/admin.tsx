@@ -121,20 +121,22 @@ function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const getResponses = useServerFn(getAdminSurveyResponses);
 
-  const load = () => {
+  useEffect(() => {
+    let cancelled = false;
     setLoading(true);
     getResponses()
       .then(({ rows }) => {
-        setRows(rows);
+        if (!cancelled) setRows(rows);
       })
       .catch((error) => {
+        if (cancelled) return;
         toast.error(error instanceof Error ? error.message : "Не удалось загрузить ответы");
       })
       .finally(() => {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       });
-  };
-  useEffect(load, []);
+    return () => { cancelled = true; };
+  }, []);
 
   const agro = rows.filter((r) => r.survey_type === "agro");
   const ind = rows.filter((r) => r.survey_type === "industry");
