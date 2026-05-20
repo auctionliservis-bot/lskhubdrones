@@ -146,7 +146,7 @@ export function SurveyForm({ survey }: { survey: SurveyDef }) {
       toast.error("Не удалось отправить анкету. Попробуйте ещё раз.");
       return;
     }
-    navigate({ to: "/thank-you" });
+    navigate({ to: "/drone-lab/thank-you" });
   };
 
   return (

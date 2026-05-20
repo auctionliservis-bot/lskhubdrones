@@ -17,7 +17,7 @@ export function BrandHeader() {
           </div>
         </Link>
         <Link
-          to="/admin"
+          to="/drone-lab/admin"
           className="text-xs text-muted-foreground hover:text-foreground transition-colors"
         >
           Админ
