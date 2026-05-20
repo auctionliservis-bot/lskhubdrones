@@ -181,8 +181,8 @@ function AdminDashboard() {
               <TabsTrigger value="export">Экспорт</TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="mt-6"><OverviewTab rows={rows} /></TabsContent>
-            <TabsContent value="agro" className="mt-6"><SegmentTab rows={agro} type="agro" /></TabsContent>
-            <TabsContent value="industry" className="mt-6"><SegmentTab rows={ind} type="industry" /></TabsContent>
+            <TabsContent value="agro" className="mt-6"><SegmentTab rows={rows.filter((r) => r.survey_type === "agro")} type="agro" /></TabsContent>
+            <TabsContent value="industry" className="mt-6"><SegmentTab rows={rows.filter((r) => r.survey_type === "industry")} type="industry" /></TabsContent>
             <TabsContent value="all" className="mt-6"><AllResponsesTab rows={rows} /></TabsContent>
             <TabsContent value="analytics" className="mt-6"><AnalyticsTab rows={rows} /></TabsContent>
             <TabsContent value="export" className="mt-6"><ExportTab rows={rows} /></TabsContent>
