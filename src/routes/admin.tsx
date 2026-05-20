@@ -43,15 +43,20 @@ function AdminPage() {
   }, []);
 
   useEffect(() => {
-    if (!session) { setIsAdmin(null); return; }
+    if (!session?.userId) { setIsAdmin(null); return; }
+    let cancelled = false;
     setIsAdmin(null);
     checkAdmin()
-      .then(({ isAdmin }) => setIsAdmin(isAdmin))
+      .then(({ isAdmin }) => {
+        if (!cancelled) setIsAdmin(isAdmin);
+      })
       .catch((error) => {
+        if (cancelled) return;
         toast.error(error instanceof Error ? error.message : "Не удалось проверить доступ");
         setIsAdmin(false);
       });
-  }, [session, checkAdmin]);
+    return () => { cancelled = true; };
+  }, [session?.userId]);
 
   if (checking) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>;
   if (!session) return <AuthScreen />;
