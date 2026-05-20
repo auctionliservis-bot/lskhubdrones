@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -14,6 +15,7 @@ import { toast } from "sonner";
 import { Loader2, LogOut, Download, Flame, Sparkles, FileText } from "lucide-react";
 import { type SurveyRow, answersOf, frequency, isHotLead, surveyFor } from "@/lib/admin-analytics";
 import { rowsToCSV, contactsToCSV, downloadFile, buildTextReport } from "@/lib/admin-export";
+import { checkAdminAccess, getAdminSurveyResponses } from "@/lib/admin.functions";
 import { AGRO_SURVEY, INDUSTRY_SURVEY } from "@/lib/survey-questions";
 
 export const Route = createFileRoute("/admin")({
@@ -27,6 +29,7 @@ function AdminPage() {
   const [session, setSession] = useState<{ userId: string } | null>(null);
   const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
   const [checking, setChecking] = useState(true);
+  const checkAdmin = useServerFn(checkAdminAccess);
 
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_e, s) => {
@@ -40,10 +43,20 @@ function AdminPage() {
   }, []);
 
   useEffect(() => {
-    if (!session) { setIsAdmin(null); return; }
-    supabase.from("user_roles").select("role").eq("user_id", session.userId).eq("role", "admin").maybeSingle()
-      .then(({ data }) => setIsAdmin(!!data));
-  }, [session]);
+    if (!session?.userId) { setIsAdmin(null); return; }
+    let cancelled = false;
+    setIsAdmin(null);
+    checkAdmin()
+      .then(({ isAdmin }) => {
+        if (!cancelled) setIsAdmin(isAdmin);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        toast.error(error instanceof Error ? error.message : "Не удалось проверить доступ");
+        setIsAdmin(false);
+      });
+    return () => { cancelled = true; };
+  }, [session?.userId]);
 
   if (checking) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-6 h-6 animate-spin text-muted-foreground" /></div>;
   if (!session) return <AuthScreen />;
@@ -106,17 +119,24 @@ function NotAdminScreen() {
 function AdminDashboard() {
   const [rows, setRows] = useState<SurveyRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const getResponses = useServerFn(getAdminSurveyResponses);
 
-  const load = () => {
+  useEffect(() => {
+    let cancelled = false;
     setLoading(true);
-    supabase.from("survey_responses").select("*").order("created_at", { ascending: false })
-      .then(({ data, error }) => {
-        if (error) toast.error(error.message);
-        else setRows(data ?? []);
-        setLoading(false);
+    getResponses()
+      .then(({ rows }) => {
+        if (!cancelled) setRows(rows);
+      })
+      .catch((error) => {
+        if (cancelled) return;
+        toast.error(error instanceof Error ? error.message : "Не удалось загрузить ответы");
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
       });
-  };
-  useEffect(load, []);
+    return () => { cancelled = true; };
+  }, []);
 
   const agro = rows.filter((r) => r.survey_type === "agro");
   const ind = rows.filter((r) => r.survey_type === "industry");
