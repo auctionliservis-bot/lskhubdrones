@@ -3,7 +3,7 @@ import { BrandHeader, BrandFooter } from "@/components/Brand";
 import { CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
-export const Route = createFileRoute("/thank-you")({
+export const Route = createFileRoute("/drone-lab/thank-you")({
   head: () => ({
     meta: [{ title: "Спасибо! · Lisakovsk HUB Drone & AI Lab" }],
   }),

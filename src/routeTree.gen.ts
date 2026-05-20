@@ -9,106 +9,94 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ThankYouRouteImport } from './routes/thank-you'
-import { Route as IndustryRouteImport } from './routes/industry'
-import { Route as AgroRouteImport } from './routes/agro'
-import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as DroneLabThankYouRouteImport } from './routes/drone-lab.thank-you'
+import { Route as DroneLabIndustryRouteImport } from './routes/drone-lab.industry'
+import { Route as DroneLabAgroRouteImport } from './routes/drone-lab.agro'
+import { Route as DroneLabAdminRouteImport } from './routes/drone-lab.admin'
 
-const ThankYouRoute = ThankYouRouteImport.update({
-  id: '/thank-you',
-  path: '/thank-you',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IndustryRoute = IndustryRouteImport.update({
-  id: '/industry',
-  path: '/industry',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AgroRoute = AgroRouteImport.update({
-  id: '/agro',
-  path: '/agro',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminRoute = AdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DroneLabThankYouRoute = DroneLabThankYouRouteImport.update({
+  id: '/drone-lab/thank-you',
+  path: '/drone-lab/thank-you',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DroneLabIndustryRoute = DroneLabIndustryRouteImport.update({
+  id: '/drone-lab/industry',
+  path: '/drone-lab/industry',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DroneLabAgroRoute = DroneLabAgroRouteImport.update({
+  id: '/drone-lab/agro',
+  path: '/drone-lab/agro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DroneLabAdminRoute = DroneLabAdminRouteImport.update({
+  id: '/drone-lab/admin',
+  path: '/drone-lab/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
-  '/agro': typeof AgroRoute
-  '/industry': typeof IndustryRoute
-  '/thank-you': typeof ThankYouRoute
+  '/drone-lab/admin': typeof DroneLabAdminRoute
+  '/drone-lab/agro': typeof DroneLabAgroRoute
+  '/drone-lab/industry': typeof DroneLabIndustryRoute
+  '/drone-lab/thank-you': typeof DroneLabThankYouRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
-  '/agro': typeof AgroRoute
-  '/industry': typeof IndustryRoute
-  '/thank-you': typeof ThankYouRoute
+  '/drone-lab/admin': typeof DroneLabAdminRoute
+  '/drone-lab/agro': typeof DroneLabAgroRoute
+  '/drone-lab/industry': typeof DroneLabIndustryRoute
+  '/drone-lab/thank-you': typeof DroneLabThankYouRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/admin': typeof AdminRoute
-  '/agro': typeof AgroRoute
-  '/industry': typeof IndustryRoute
-  '/thank-you': typeof ThankYouRoute
+  '/drone-lab/admin': typeof DroneLabAdminRoute
+  '/drone-lab/agro': typeof DroneLabAgroRoute
+  '/drone-lab/industry': typeof DroneLabIndustryRoute
+  '/drone-lab/thank-you': typeof DroneLabThankYouRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/admin' | '/agro' | '/industry' | '/thank-you'
+  fullPaths:
+    | '/'
+    | '/drone-lab/admin'
+    | '/drone-lab/agro'
+    | '/drone-lab/industry'
+    | '/drone-lab/thank-you'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/agro' | '/industry' | '/thank-you'
-  id: '__root__' | '/' | '/admin' | '/agro' | '/industry' | '/thank-you'
+  to:
+    | '/'
+    | '/drone-lab/admin'
+    | '/drone-lab/agro'
+    | '/drone-lab/industry'
+    | '/drone-lab/thank-you'
+  id:
+    | '__root__'
+    | '/'
+    | '/drone-lab/admin'
+    | '/drone-lab/agro'
+    | '/drone-lab/industry'
+    | '/drone-lab/thank-you'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AdminRoute: typeof AdminRoute
-  AgroRoute: typeof AgroRoute
-  IndustryRoute: typeof IndustryRoute
-  ThankYouRoute: typeof ThankYouRoute
+  DroneLabAdminRoute: typeof DroneLabAdminRoute
+  DroneLabAgroRoute: typeof DroneLabAgroRoute
+  DroneLabIndustryRoute: typeof DroneLabIndustryRoute
+  DroneLabThankYouRoute: typeof DroneLabThankYouRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/thank-you': {
-      id: '/thank-you'
-      path: '/thank-you'
-      fullPath: '/thank-you'
-      preLoaderRoute: typeof ThankYouRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/industry': {
-      id: '/industry'
-      path: '/industry'
-      fullPath: '/industry'
-      preLoaderRoute: typeof IndustryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/agro': {
-      id: '/agro'
-      path: '/agro'
-      fullPath: '/agro'
-      preLoaderRoute: typeof AgroRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin': {
-      id: '/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AdminRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -116,16 +104,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/drone-lab/thank-you': {
+      id: '/drone-lab/thank-you'
+      path: '/drone-lab/thank-you'
+      fullPath: '/drone-lab/thank-you'
+      preLoaderRoute: typeof DroneLabThankYouRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drone-lab/industry': {
+      id: '/drone-lab/industry'
+      path: '/drone-lab/industry'
+      fullPath: '/drone-lab/industry'
+      preLoaderRoute: typeof DroneLabIndustryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drone-lab/agro': {
+      id: '/drone-lab/agro'
+      path: '/drone-lab/agro'
+      fullPath: '/drone-lab/agro'
+      preLoaderRoute: typeof DroneLabAgroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drone-lab/admin': {
+      id: '/drone-lab/admin'
+      path: '/drone-lab/admin'
+      fullPath: '/drone-lab/admin'
+      preLoaderRoute: typeof DroneLabAdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AdminRoute: AdminRoute,
-  AgroRoute: AgroRoute,
-  IndustryRoute: IndustryRoute,
-  ThankYouRoute: ThankYouRoute,
+  DroneLabAdminRoute: DroneLabAdminRoute,
+  DroneLabAgroRoute: DroneLabAgroRoute,
+  DroneLabIndustryRoute: DroneLabIndustryRoute,
+  DroneLabThankYouRoute: DroneLabThankYouRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
