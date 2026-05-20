@@ -119,27 +119,33 @@ function NotAdminScreen() {
 function AdminDashboard() {
   const [rows, setRows] = useState<SurveyRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [resetting, setResetting] = useState(false);
   const getResponses = useServerFn(getAdminSurveyResponses);
+  const deleteAll = useServerFn(deleteAllSurveyResponses);
 
-  useEffect(() => {
-    let cancelled = false;
+  const load = () => {
     setLoading(true);
     getResponses()
-      .then(({ rows }) => {
-        if (!cancelled) setRows(rows);
-      })
-      .catch((error) => {
-        if (cancelled) return;
-        toast.error(error instanceof Error ? error.message : "Не удалось загрузить ответы");
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false);
-      });
-    return () => { cancelled = true; };
-  }, []);
+      .then(({ rows }) => setRows(rows))
+      .catch((e) => toast.error(e instanceof Error ? e.message : "Не удалось загрузить ответы"))
+      .finally(() => setLoading(false));
+  };
 
-  const agro = rows.filter((r) => r.survey_type === "agro");
-  const ind = rows.filter((r) => r.survey_type === "industry");
+  useEffect(() => { load(); }, []);
+
+  const handleReset = async () => {
+    if (!window.confirm("Удалить ВСЕ ответы? Действие необратимо.")) return;
+    setResetting(true);
+    try {
+      const { deleted } = await deleteAll({});
+      toast.success(`Удалено записей: ${deleted}`);
+      setRows([]);
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Не удалось удалить");
+    } finally {
+      setResetting(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-subtle-gradient">
@@ -149,9 +155,15 @@ function AdminDashboard() {
             <div className="font-bold text-sm">Lisakovsk HUB · Админ</div>
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground">Drone &amp; AI Lab</div>
           </div>
-          <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()}>
-            <LogOut className="w-4 h-4 mr-1.5" /> Выйти
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="sm" onClick={handleReset} disabled={resetting || rows.length === 0} className="text-destructive hover:text-destructive">
+              {resetting ? <Loader2 className="w-4 h-4 mr-1.5 animate-spin" /> : <Trash2 className="w-4 h-4 mr-1.5" />}
+              Обнулить все ответы
+            </Button>
+            <Button variant="ghost" size="sm" onClick={() => supabase.auth.signOut()}>
+              <LogOut className="w-4 h-4 mr-1.5" /> Выйти
+            </Button>
+          </div>
         </div>
       </header>
 
