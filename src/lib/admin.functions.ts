@@ -39,3 +39,17 @@ export const getAdminSurveyResponses = createServerFn({ method: "GET" })
     if (error) throw new Error(error.message);
     return { rows: (data ?? []) as SurveyRow[] };
   });
+
+export const deleteAllSurveyResponses = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    if (!(await userIsAdmin(context.userId))) {
+      throw new Error("Нет прав администратора");
+    }
+    const { error, count } = await supabaseAdmin
+      .from("survey_responses")
+      .delete({ count: "exact" })
+      .not("id", "is", null);
+    if (error) throw new Error(error.message);
+    return { deleted: count ?? 0 };
+  });
